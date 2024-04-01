@@ -8,18 +8,37 @@
 import SwiftUI
 
 struct TriviaView: View {
+    @StateObject var viewModel = TriviaViewModel()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationView {
+            VStack {
+                if viewModel.triviaQuestions.isEmpty {
+                    Text("Loading questions...")
+                        .padding()
+                } else {
+                    let question = viewModel.triviaQuestions[viewModel.currentQuestionIndex]
+                    Text(question.question)
+                        .padding()
+                    HStack {
+                        Button("True") {
+                            viewModel.checkAnswer(userAnswer: "True")
+                        }
+                        Button("False") {
+                            viewModel.checkAnswer(userAnswer: "False")
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Trivia Question \(viewModel.currentQuestionIndex + 1)/\(viewModel.triviaQuestions.count)")
+            .onAppear {
+                viewModel.fetchTriviaQuestions()
+            }
         }
-        .padding()
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct TriviaListView_Previews: PreviewProvider {
     static var previews: some View {
         TriviaView()
     }

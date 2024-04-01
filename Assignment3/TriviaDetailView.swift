@@ -8,11 +8,32 @@
 import SwiftUI
 
 struct TriviaDetailView: View {
+    var triviaQuestion: TriviaQuestion
+        
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(alignment: .leading, spacing: 20) {
+            Text("Question: \(triviaQuestion.question)")
+                .bold()
+            Text("Answer: \(triviaQuestion.correctAnswer)")
+            Text("Difficulty: \(triviaQuestion.difficulty.capitalized)")
+            Spacer()
+        }
+        .padding()
+        .navigationTitle(triviaQuestion.category)
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
-#Preview {
-    TriviaDetailView()
+struct TriviaDetailView_Previews: PreviewProvider {
+    static var previews: some View {
+        let sampleTriviaQuestion = TriviaQuestion(
+            category: "Animals",
+            type: "boolean",
+            difficulty: "easy",
+            question: "Cats have whiskers under their legs.",
+            correctAnswer: "True",
+            incorrectAnswers: ["False"]
+        )
+        TriviaDetailView(triviaQuestion: sampleTriviaQuestion)
+    }
 }
